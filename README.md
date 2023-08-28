@@ -14,7 +14,7 @@ Features:
 - **Advanced Customization:** Customize scrollbar size, orientation, gravity and visibility animation.
 - **Layers Configuration:** Configure background and knob layers with style, appearance and animation.
 - **Knob Scroll Behavior:** Choose from static, worm, fraction, or exact scroll behaviors for the knob.
-- **Scroll States Support:** Ready for ScrollState, LazyListState, LazyGridState, LazyStaggeredGridState.
+- **Scroll States Support:** Ready for `ScrollState`, `LazyListState`, `LazyGridState`, `LazyStaggeredGridState`.
 - **Custom Content Draw:** Design custom backgrounds and knobs when required.
 - **Sample App:** Explore and experiment with [sample app](#sample-app).
 
