@@ -888,6 +888,12 @@ fun MainScreenContent() {
             rawLazyListState.scrollToItem(0)
         }
         coroutineScope.launch {
+            rawLazyGridState.scrollToItem(0)
+        }
+        coroutineScope.launch {
+            rawLazyStaggeredGridState.scrollToItem(0)
+        }
+        coroutineScope.launch {
             configScrollState.scrollTo(0)
         }
     }
