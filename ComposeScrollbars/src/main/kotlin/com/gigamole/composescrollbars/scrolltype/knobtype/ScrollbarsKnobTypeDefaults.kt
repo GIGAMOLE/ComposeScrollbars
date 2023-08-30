@@ -18,7 +18,8 @@ import com.gigamole.composescrollbars.scrolltype.knobtype.ScrollbarsKnobTypeDefa
 object ScrollbarsKnobTypeDefaults {
 
     /** The default knob [AnimationSpec]. */
-    val AnimationSpec: AnimationSpec<Float> = spring()
+    val AnimationSpec: AnimationSpec<Float>
+        get() = spring()
 
     /** The default values for static and dynamic fraction [ScrollbarsKnobType]. */
     object Fraction {

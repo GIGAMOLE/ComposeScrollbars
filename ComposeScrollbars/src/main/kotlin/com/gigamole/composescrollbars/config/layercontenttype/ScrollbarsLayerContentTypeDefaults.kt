@@ -48,10 +48,12 @@ object ScrollbarsLayerContentTypeDefaults {
                 val ActiveColor: Color = Color.LightGray
 
                 /** The default content active color in [AnimationSpec]. */
-                val InAnimationSpec: AnimationSpec<Color> = spring()
+                val InAnimationSpec: AnimationSpec<Color>
+                    get() = spring()
 
                 /** The default content active color out [AnimationSpec]. */
-                val OutAnimationSpec: AnimationSpec<Color> = tween(delayMillis = 750)
+                val OutAnimationSpec: AnimationSpec<Color>
+                    get() = tween(delayMillis = 750)
             }
         }
     }

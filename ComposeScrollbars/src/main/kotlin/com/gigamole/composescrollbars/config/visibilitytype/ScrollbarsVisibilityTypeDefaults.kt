@@ -17,10 +17,12 @@ object ScrollbarsVisibilityTypeDefaults {
     object Dynamic {
 
         /** The default in [AnimationSpec]. */
-        val InAnimationSpec: AnimationSpec<Float> = spring()
+        val InAnimationSpec: AnimationSpec<Float>
+            get() = spring()
 
         /** The default out [AnimationSpec]. */
-        val OutAnimationSpec: AnimationSpec<Float> = tween(delayMillis = 750)
+        val OutAnimationSpec: AnimationSpec<Float>
+            get() = tween(delayMillis = 750)
 
         /** The default is faded indicator. */
         const val IsFaded: Boolean = true
