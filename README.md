@@ -111,7 +111,7 @@ The `Default` mode can set the content layer shape, style (`Backgrond` or `Borde
 
 The `ScrollbarsVisibilityType` can be one of the following:
 
-- `Static`: The static scrollbars visibility. Always visible.
+- `Static`: The static scrollbars visibility.
 - `Dynamic`: The dynamic scrollbars visibility. Includes in/out animation, fading and other.
 
 The `Dynamic` mode can be one of the following:
@@ -124,6 +124,7 @@ The `Dynamic` mode can the following UX utility params:
 
 - `isVisibleWhenScrollNotPossible`: Indicates whether scrollbars are visible when the scroll is not possible (short content).
 - `isVisibleOnTouchDown`: Indicates whether scrollbars are visible when any press/touch down event occurred.
+- `isStaticWhenScrollPossible`: Indicates whether scrollbars are statically visible only when the scroll is possible.
 
 #### ScrollbarsScrollType
 

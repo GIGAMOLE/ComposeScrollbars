@@ -530,7 +530,7 @@ private fun Modifier.visibility(
                     }
                     .alpha(alpha = visibilityType.fadeFraction)
             }
-            ScrollbarsVisibilityType.Static -> {
+            is ScrollbarsVisibilityType.Static -> {
                 Modifier
             }
         }

@@ -31,6 +31,9 @@ object ScrollbarsVisibilityTypeDefaults {
         /** The default is visible on any touch/press down indicator. */
         const val IsVisibleOnTouchDown: Boolean = false
 
+        /** The default are scrollbars statically visible only when the scroll is possible indicator. */
+        const val IsStaticWhenScrollPossible: Boolean = true
+
         /** The default values for [ScrollbarsVisibilityType.Dynamic.Scale]. */
         object Scale {
 

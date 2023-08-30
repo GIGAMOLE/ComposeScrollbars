@@ -69,6 +69,13 @@ sealed interface ScrollbarsVisibilityType {
          */
         abstract val isVisibleOnTouchDown: Boolean
 
+        /**
+         * Indicates whether scrollbars are statically visible only when the scroll is possible.
+         *
+         * @see ScrollbarsScrollType.isScrollPossible
+         */
+        abstract val isStaticWhenScrollPossible: Boolean
+
         private var fractionState by mutableFloatStateOf(0.0F)
         private var isAwaitTouchDownState by mutableStateOf(false)
         private var isAwaitTouchDownAnimationFinishedState by mutableStateOf(false)
@@ -143,8 +150,13 @@ sealed interface ScrollbarsVisibilityType {
                 } else {
                     false
                 }
+                val isStaticWhenScrollPossibleFlag = if (isStaticWhenScrollPossible) {
+                    isScrollPossible
+                } else {
+                    isScrollInProgress
+                }
 
-                (isScrollInProgress || isVisibleOnTouchDownFlag || isHighlightingState) && isVisibleWhenScrollNotPossibleFlag
+                (isStaticWhenScrollPossibleFlag || isVisibleOnTouchDownFlag || isHighlightingState) && isVisibleWhenScrollNotPossibleFlag
             }
             val targetValue = if (isVisible) {
                 1.0F
@@ -202,12 +214,14 @@ sealed interface ScrollbarsVisibilityType {
          * @property outAnimationSpec The out [AnimationSpec]. Null disables the animation.
          * @property isVisibleWhenScrollNotPossible Indicates whether scrollbars are visible when the scroll is not possible (short content).
          * @property isVisibleOnTouchDown Indicates whether scrollbars are visible when any press/touch down event occurred.
+         * @property isStaticWhenScrollPossible Indicates whether scrollbars are statically visible only when the scroll is possible.
          */
         data class Fade(
             override val inAnimationSpec: AnimationSpec<Float>? = ScrollbarsVisibilityTypeDefaults.Dynamic.InAnimationSpec,
             override val outAnimationSpec: AnimationSpec<Float>? = ScrollbarsVisibilityTypeDefaults.Dynamic.OutAnimationSpec,
             override val isVisibleWhenScrollNotPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleWhenScrollNotPossible,
             override val isVisibleOnTouchDown: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleOnTouchDown,
+            override val isStaticWhenScrollPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsStaticWhenScrollPossible
         ) : Dynamic() {
 
             override val isFaded: Boolean
@@ -222,6 +236,7 @@ sealed interface ScrollbarsVisibilityType {
          * @property isFaded Indicates whether the dynamic visibility is animated with fade.
          * @property isVisibleWhenScrollNotPossible Indicates whether scrollbars are visible when the scroll is not possible (short content).
          * @property isVisibleOnTouchDown Indicates whether scrollbars are visible when any press/touch down event occurred.
+         * @property isStaticWhenScrollPossible Indicates whether scrollbars are statically visible only when the scroll is possible.
          * @see ScrollbarsLayersType
          */
         data class Slide(
@@ -230,6 +245,7 @@ sealed interface ScrollbarsVisibilityType {
             override val isFaded: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsFaded,
             override val isVisibleWhenScrollNotPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleWhenScrollNotPossible,
             override val isVisibleOnTouchDown: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleOnTouchDown,
+            override val isStaticWhenScrollPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsStaticWhenScrollPossible
         ) : Dynamic() {
 
             private var targetSlideOffsetState by mutableStateOf(IntOffset.Zero)
@@ -297,6 +313,7 @@ sealed interface ScrollbarsVisibilityType {
          * @property isFaded Indicates whether the dynamic visibility is animated with fade.
          * @property isVisibleWhenScrollNotPossible Indicates whether scrollbars are visible when the scroll is not possible (short content).
          * @property isVisibleOnTouchDown Indicates whether scrollbars are visible when any press/touch down event occurred.
+         * @property isStaticWhenScrollPossible Indicates whether scrollbars are statically visible only when the scroll is possible.
          * @property startScale The start (from) scale. The stop scale is at 1.0F.
          */
         data class Scale(
@@ -305,6 +322,7 @@ sealed interface ScrollbarsVisibilityType {
             override val isFaded: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsFaded,
             override val isVisibleWhenScrollNotPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleWhenScrollNotPossible,
             override val isVisibleOnTouchDown: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleOnTouchDown,
+            override val isStaticWhenScrollPossible: Boolean = ScrollbarsVisibilityTypeDefaults.Dynamic.IsStaticWhenScrollPossible,
             val startScale: Float = ScrollbarsVisibilityTypeDefaults.Dynamic.Scale.StartScale
         ) : Dynamic() {
 

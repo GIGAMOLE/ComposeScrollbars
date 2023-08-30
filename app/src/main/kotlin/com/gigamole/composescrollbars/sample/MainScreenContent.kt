@@ -181,11 +181,12 @@ fun MainScreenContent() {
     var scrollbarsSampleKnobIdleActiveAnimationSpec by remember { mutableStateOf(SampleIdleActiveAnimationSpec.Default) }
 
     // Scrollbars visibility type setup.
-    var scrollbarsSampleVisibilityType by remember { mutableStateOf(SampleVisibilityType.Static) }
+    var scrollbarsSampleVisibilityType by remember { mutableStateOf(SampleVisibilityType.Fade) }
     var scrollbarsDynamicVisibilityAnimationSpec by remember { mutableStateOf(SampleDynamicVisibilityAnimationSpec.Default) }
     var scrollbarsDynamicVisibilityIsFaded by remember { mutableStateOf(ScrollbarsVisibilityTypeDefaults.Dynamic.IsFaded) }
     var scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible by remember { mutableStateOf(ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleWhenScrollNotPossible) }
     var scrollbarsDynamicVisibilityIsVisibleOnTouchDown by remember { mutableStateOf(ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleOnTouchDown) }
+    var scrollbarsDynamicVisibilityIsStaticWhenScrollPossible by remember { mutableStateOf(ScrollbarsVisibilityTypeDefaults.Dynamic.IsStaticWhenScrollPossible) }
     var scrollbarsScaleVisibilityStartScale by remember { mutableFloatStateOf(ScrollbarsVisibilityTypeDefaults.Dynamic.Scale.StartScale) }
 
     // Scrollbars knob type setup.
@@ -523,6 +524,7 @@ fun MainScreenContent() {
         scrollbarsDynamicVisibilityIsFaded,
         scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible,
         scrollbarsDynamicVisibilityIsVisibleOnTouchDown,
+        scrollbarsDynamicVisibilityIsStaticWhenScrollPossible,
         scrollbarsInDynamicVisibilityAnimationSpec,
         scrollbarsOutDynamicVisibilityAnimationSpec,
         scrollbarsScaleVisibilityStartScale
@@ -537,7 +539,8 @@ fun MainScreenContent() {
                         inAnimationSpec = scrollbarsInDynamicVisibilityAnimationSpec,
                         outAnimationSpec = scrollbarsOutDynamicVisibilityAnimationSpec,
                         isVisibleWhenScrollNotPossible = scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible,
-                        isVisibleOnTouchDown = scrollbarsDynamicVisibilityIsVisibleOnTouchDown
+                        isVisibleOnTouchDown = scrollbarsDynamicVisibilityIsVisibleOnTouchDown,
+                        isStaticWhenScrollPossible = scrollbarsDynamicVisibilityIsStaticWhenScrollPossible
                     )
                 }
                 SampleVisibilityType.Slide -> {
@@ -546,7 +549,8 @@ fun MainScreenContent() {
                         outAnimationSpec = scrollbarsOutDynamicVisibilityAnimationSpec,
                         isFaded = scrollbarsDynamicVisibilityIsFaded,
                         isVisibleWhenScrollNotPossible = scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible,
-                        isVisibleOnTouchDown = scrollbarsDynamicVisibilityIsVisibleOnTouchDown
+                        isVisibleOnTouchDown = scrollbarsDynamicVisibilityIsVisibleOnTouchDown,
+                        isStaticWhenScrollPossible = scrollbarsDynamicVisibilityIsStaticWhenScrollPossible
                     )
                 }
                 SampleVisibilityType.Scale -> {
@@ -556,6 +560,7 @@ fun MainScreenContent() {
                         isFaded = scrollbarsDynamicVisibilityIsFaded,
                         isVisibleWhenScrollNotPossible = scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible,
                         isVisibleOnTouchDown = scrollbarsDynamicVisibilityIsVisibleOnTouchDown,
+                        isStaticWhenScrollPossible = scrollbarsDynamicVisibilityIsStaticWhenScrollPossible,
                         startScale = scrollbarsScaleVisibilityStartScale
                     )
                 }
@@ -950,11 +955,12 @@ fun MainScreenContent() {
         scrollbarsKnobLayerContentActiveColor = ScrollbarsLayerContentTypeDefaults.Default.Colored.IdleActive.ActiveColor
         scrollbarsSampleKnobIdleActiveAnimationSpec = SampleIdleActiveAnimationSpec.Default
 
-        scrollbarsSampleVisibilityType = SampleVisibilityType.Static
+        scrollbarsSampleVisibilityType = SampleVisibilityType.Fade
         scrollbarsDynamicVisibilityAnimationSpec = SampleDynamicVisibilityAnimationSpec.Default
         scrollbarsDynamicVisibilityIsFaded = ScrollbarsVisibilityTypeDefaults.Dynamic.IsFaded
         scrollbarsDynamicVisibilityIsVisibleWhenScrollNotPossible = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleWhenScrollNotPossible
         scrollbarsDynamicVisibilityIsVisibleOnTouchDown = ScrollbarsVisibilityTypeDefaults.Dynamic.IsVisibleOnTouchDown
+        scrollbarsDynamicVisibilityIsStaticWhenScrollPossible = ScrollbarsVisibilityTypeDefaults.Dynamic.IsStaticWhenScrollPossible
         scrollbarsScaleVisibilityStartScale = ScrollbarsVisibilityTypeDefaults.Dynamic.Scale.StartScale
 
         scrollbarsSampleStaticKnobType = SampleStaticKnobType.Auto
@@ -2304,6 +2310,26 @@ fun MainScreenContent() {
                             checked = scrollbarsDynamicVisibilityIsVisibleOnTouchDown,
                             onCheckedChange = {
                                 scrollbarsDynamicVisibilityIsVisibleOnTouchDown = it
+                            }
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(space = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(weight = 1.0F)
+                                .basicMarquee(),
+                            text = "IS STATIC WHEN SCROLL POSSIBLE:",
+                            style = MaterialTheme.typography.labelLarge,
+                            maxLines = 1
+                        )
+                        Switch(
+                            checked = scrollbarsDynamicVisibilityIsStaticWhenScrollPossible,
+                            onCheckedChange = {
+                                scrollbarsDynamicVisibilityIsStaticWhenScrollPossible = it
                             }
                         )
                     }

@@ -37,5 +37,5 @@ object ScrollbarsConfigDefaults {
     val KnobLayerContentType: ScrollbarsLayerContentType = ScrollbarsLayerContentType.Default.Colored.IdleActive()
 
     /** The default [ScrollbarsVisibilityType]. */
-    val VisibilityType: ScrollbarsVisibilityType = ScrollbarsVisibilityType.Static
+    val VisibilityType: ScrollbarsVisibilityType = ScrollbarsVisibilityType.Dynamic.Fade()
 }
