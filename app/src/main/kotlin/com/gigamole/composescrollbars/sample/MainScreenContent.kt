@@ -1058,6 +1058,17 @@ fun MainScreenContent() {
             targetState = scrollbarsSampleScrollType to scrollbarsOrientation,
             label = "ScrollbarsCrossfade"
         ) { (scrollbarsSampleContentTypeState, scrollbarsOrientationState) ->
+            val verticalAlignment = if (scrollbarsIsReverseLayout) {
+                Alignment.Bottom
+            } else {
+                Alignment.Top
+            }
+            val horizontalAlignment = if (scrollbarsIsReverseLayout) {
+                Alignment.End
+            } else {
+                Alignment.Start
+            }
+
             when (scrollbarsSampleContentTypeState) {
                 SampleScrollType.Scroll -> {
                     when (scrollbarsOrientationState) {
@@ -1076,11 +1087,7 @@ fun MainScreenContent() {
                                         ),
                                     verticalArrangement = Arrangement.spacedBy(
                                         space = itemsSpacing,
-                                        alignment = if (scrollbarsIsReverseLayout) {
-                                            Alignment.Bottom
-                                        } else {
-                                            Alignment.Top
-                                        }
+                                        alignment = verticalAlignment
                                     )
                                 ) {
                                     repeat(itemsCount) { index ->
@@ -1114,11 +1121,7 @@ fun MainScreenContent() {
                                         ),
                                     horizontalArrangement = Arrangement.spacedBy(
                                         space = itemsSpacing,
-                                        alignment = if (scrollbarsIsReverseLayout) {
-                                            Alignment.End
-                                        } else {
-                                            Alignment.Start
-                                        }
+                                        alignment = horizontalAlignment
                                     )
                                 ) {
                                     repeat(itemsCount) { index ->
@@ -1146,7 +1149,10 @@ fun MainScreenContent() {
                                 LazyColumn(
                                     modifier = Modifier.fillMaxSize(),
                                     state = rawLazyListState,
-                                    verticalArrangement = Arrangement.spacedBy(space = itemsSpacing),
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = verticalAlignment
+                                    ),
                                     contentPadding = PaddingValues(
                                         horizontal = 20.dp,
                                         vertical = contentSpacing
@@ -1168,7 +1174,10 @@ fun MainScreenContent() {
                                 LazyRow(
                                     modifier = Modifier.fillMaxSize(),
                                     state = rawLazyListState,
-                                    horizontalArrangement = Arrangement.spacedBy(space = itemsSpacing),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = horizontalAlignment
+                                    ),
                                     contentPadding = PaddingValues(
                                         horizontal = contentSpacing,
                                         vertical = 20.dp
@@ -1194,7 +1203,10 @@ fun MainScreenContent() {
                                 LazyVerticalGrid(
                                     modifier = Modifier.fillMaxSize(),
                                     state = rawLazyGridState,
-                                    verticalArrangement = Arrangement.spacedBy(space = itemsSpacing),
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = verticalAlignment
+                                    ),
                                     contentPadding = PaddingValues(
                                         horizontal = 20.dp,
                                         vertical = contentSpacing
@@ -1217,7 +1229,10 @@ fun MainScreenContent() {
                                 LazyHorizontalGrid(
                                     modifier = Modifier.fillMaxSize(),
                                     state = rawLazyGridState,
-                                    horizontalArrangement = Arrangement.spacedBy(space = itemsSpacing),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = horizontalAlignment
+                                    ),
                                     contentPadding = PaddingValues(
                                         horizontal = contentSpacing,
                                         vertical = 20.dp
