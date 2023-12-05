@@ -21,6 +21,9 @@ object ScrollbarsConfigDefaults {
     /** The default [ScrollbarsGravity]. */
     val Gravity: ScrollbarsGravity = ScrollbarsGravity.End
 
+    /** The default is reverse layout indicator. */
+    const val IsReverseLayout: Boolean = false
+
     /** The default scrollbars layers container [PaddingValues]. */
     val PaddingValues: PaddingValues = PaddingValues(all = 4.dp)
 

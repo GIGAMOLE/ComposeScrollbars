@@ -1,17 +1,17 @@
 [versions]
 
 # Android/Kotlin
-android_gradle_plugin_version = "8.1.1"
+android_gradle_plugin_version = "8.2.0"
 androidx_ktx_version = "1.12.0"
-kotlin_version = "1.9.10"
+kotlin_version = "1.9.20"
 
 # Plugins
-ksp_version = "1.9.10-1.0.13"
+ksp_version = "1.9.20-1.0.14"
 
 # Compose
-compose_compiler_version = "1.5.3"
-compose_bom_version = "2023.09.01"
-compose_activity_version = "1.7.2"
+compose_compiler_version = "1.5.4"
+compose_bom_version = "2023.10.01"
+compose_activity_version = "1.8.1"
 compose_color_picker_version = "0.7.0"
 
 [plugins]

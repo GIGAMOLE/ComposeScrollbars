@@ -142,6 +142,7 @@ fun MainScreenContent() {
     var scrollbarsOrientation by remember { mutableStateOf(ScrollbarsOrientation.Vertical) }
     var scrollbarsSampleExampleType by remember { mutableStateOf(SampleScrollbarsExampleType.Default) }
     var scrollbarsGravity by remember { mutableStateOf(ScrollbarsConfigDefaults.Gravity) }
+    var scrollbarsIsReverseLayout by remember { mutableStateOf(ScrollbarsConfigDefaults.IsReverseLayout) }
     var scrollbarsHorizontalPaddingValue by remember { mutableStateOf(ScrollbarsConfigDefaults.PaddingValues.calculateStartPadding(LayoutDirection.Ltr)) }
     var scrollbarsVerticalPaddingValue by remember { mutableStateOf(ScrollbarsConfigDefaults.PaddingValues.calculateTopPadding()) }
     var scrollbarsSampleSizeType by remember { mutableStateOf(SampleSizeType.Full) }
@@ -571,6 +572,7 @@ fun MainScreenContent() {
     val scrollbarsConfig by remember(
         scrollbarsOrientation,
         scrollbarsGravity,
+        scrollbarsIsReverseLayout,
         scrollbarsPaddingValues,
         scrollbarsSizeType,
         scrollbarsLayersType,
@@ -585,6 +587,7 @@ fun MainScreenContent() {
                     ScrollbarsConfig(
                         orientation = scrollbarsOrientation,
                         gravity = scrollbarsGravity,
+                        isReverseLayout = scrollbarsIsReverseLayout,
                         paddingValues = scrollbarsPaddingValues,
                         sizeType = scrollbarsSizeType,
                         layersType = scrollbarsLayersType,
@@ -598,6 +601,7 @@ fun MainScreenContent() {
                     ScrollbarsConfig(
                         orientation = ScrollbarsOrientation.Vertical,
                         gravity = ScrollbarsGravity.End,
+                        isReverseLayout = scrollbarsIsReverseLayout,
                         paddingValues = PaddingValues(),
                         sizeType = ScrollbarsSizeType.Full,
                         layersType = ScrollbarsLayersType.Split(
@@ -919,6 +923,7 @@ fun MainScreenContent() {
         scrollbarsOrientation = ScrollbarsOrientation.Vertical
         scrollbarsSampleExampleType = SampleScrollbarsExampleType.Default
         scrollbarsGravity = ScrollbarsConfigDefaults.Gravity
+        scrollbarsIsReverseLayout = ScrollbarsConfigDefaults.IsReverseLayout
         scrollbarsHorizontalPaddingValue = ScrollbarsConfigDefaults.PaddingValues.calculateStartPadding(LayoutDirection.Ltr)
         scrollbarsVerticalPaddingValue = ScrollbarsConfigDefaults.PaddingValues.calculateTopPadding()
         scrollbarsSampleSizeType = SampleSizeType.Full
@@ -1061,16 +1066,32 @@ fun MainScreenContent() {
                                 Column(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .verticalScroll(state = rawScrollState)
+                                        .verticalScroll(
+                                            state = rawScrollState,
+                                            reverseScrolling = scrollbarsIsReverseLayout
+                                        )
                                         .padding(
                                             horizontal = 20.dp,
                                             vertical = contentSpacing
                                         ),
-                                    verticalArrangement = Arrangement.spacedBy(space = itemsSpacing)
+                                    verticalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = if (scrollbarsIsReverseLayout) {
+                                            Alignment.Bottom
+                                        } else {
+                                            Alignment.Top
+                                        }
+                                    )
                                 ) {
-                                    repeat(itemsCount) {
+                                    repeat(itemsCount) { index ->
+                                        val layoutIndex = if (scrollbarsIsReverseLayout) {
+                                            itemsCount - index - 1
+                                        } else {
+                                            index
+                                        }
+
                                         SampleItem(
-                                            index = it,
+                                            index = layoutIndex,
                                             orientation = scrollbarsOrientationState
                                         )
                                     }
@@ -1083,16 +1104,32 @@ fun MainScreenContent() {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .horizontalScroll(state = rawScrollState)
+                                        .horizontalScroll(
+                                            state = rawScrollState,
+                                            reverseScrolling = scrollbarsIsReverseLayout
+                                        )
                                         .padding(
                                             vertical = 20.dp,
                                             horizontal = contentSpacing
                                         ),
-                                    horizontalArrangement = Arrangement.spacedBy(space = itemsSpacing)
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemsSpacing,
+                                        alignment = if (scrollbarsIsReverseLayout) {
+                                            Alignment.End
+                                        } else {
+                                            Alignment.Start
+                                        }
+                                    )
                                 ) {
-                                    repeat(itemsCount) {
+                                    repeat(itemsCount) { index ->
+                                        val layoutIndex = if (scrollbarsIsReverseLayout) {
+                                            itemsCount - index - 1
+                                        } else {
+                                            index
+                                        }
+
                                         SampleItem(
-                                            index = it,
+                                            index = layoutIndex,
                                             orientation = scrollbarsOrientationState
                                         )
                                     }
@@ -1113,7 +1150,8 @@ fun MainScreenContent() {
                                     contentPadding = PaddingValues(
                                         horizontal = 20.dp,
                                         vertical = contentSpacing
-                                    )
+                                    ),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(itemsCount) {
                                         SampleItem(
@@ -1134,7 +1172,8 @@ fun MainScreenContent() {
                                     contentPadding = PaddingValues(
                                         horizontal = contentSpacing,
                                         vertical = 20.dp
-                                    )
+                                    ),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(itemsCount) {
                                         SampleItem(
@@ -1160,7 +1199,8 @@ fun MainScreenContent() {
                                         horizontal = 20.dp,
                                         vertical = contentSpacing
                                     ),
-                                    columns = GridCells.Fixed(count = scrollbarsGridSpanCount)
+                                    columns = GridCells.Fixed(count = scrollbarsGridSpanCount),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(gridItemsCount) {
                                         SampleItem(
@@ -1182,7 +1222,8 @@ fun MainScreenContent() {
                                         horizontal = contentSpacing,
                                         vertical = 20.dp
                                     ),
-                                    rows = GridCells.Fixed(count = scrollbarsGridSpanCount)
+                                    rows = GridCells.Fixed(count = scrollbarsGridSpanCount),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(gridItemsCount) {
                                         SampleItem(
@@ -1208,7 +1249,8 @@ fun MainScreenContent() {
                                         horizontal = 20.dp,
                                         vertical = contentSpacing
                                     ),
-                                    columns = StaggeredGridCells.Fixed(count = scrollbarsGridSpanCount)
+                                    columns = StaggeredGridCells.Fixed(count = scrollbarsGridSpanCount),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(gridItemsCount) {
                                         SampleItem(
@@ -1230,7 +1272,8 @@ fun MainScreenContent() {
                                         horizontal = contentSpacing,
                                         vertical = 20.dp
                                     ),
-                                    rows = StaggeredGridCells.Fixed(count = scrollbarsGridSpanCount)
+                                    rows = StaggeredGridCells.Fixed(count = scrollbarsGridSpanCount),
+                                    reverseLayout = scrollbarsIsReverseLayout
                                 ) {
                                     items(gridItemsCount) {
                                         SampleItem(
@@ -1251,18 +1294,18 @@ fun MainScreenContent() {
             selectedTabIndex = scrollbarsSampleScrollType.ordinal,
             modifier = Modifier.fillMaxWidth(),
             tabs = {
-                SampleScrollType.values().forEach { enumValue ->
+                SampleScrollType.entries.forEach { enumEntry ->
                     Tab(
-                        selected = enumValue == scrollbarsSampleScrollType,
+                        selected = enumEntry == scrollbarsSampleScrollType,
                         text = {
                             Text(
                                 modifier = Modifier.basicMarquee(),
-                                text = enumValue.name.uppercase(),
+                                text = enumEntry.name.uppercase(),
                                 maxLines = 1
                             )
                         },
                         onClick = {
-                            scrollbarsSampleScrollType = enumValue
+                            scrollbarsSampleScrollType = enumEntry
                         },
                     )
                 }
@@ -1284,18 +1327,18 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsSampleGridSpanCount.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        SampleGridSpanCount.values().forEach { enumValue ->
+                        SampleGridSpanCount.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsSampleGridSpanCount,
+                                selected = enumEntry == scrollbarsSampleGridSpanCount,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsSampleGridSpanCount = enumValue
+                                    scrollbarsSampleGridSpanCount = enumEntry
                                 },
                             )
                         }
@@ -1413,18 +1456,18 @@ fun MainScreenContent() {
                 selectedTabIndex = scrollbarsSampleExampleType.ordinal,
                 modifier = Modifier.fillMaxWidth(),
                 tabs = {
-                    SampleScrollbarsExampleType.values().forEach { enumValue ->
+                    SampleScrollbarsExampleType.entries.forEach { enumEntry ->
                         Tab(
-                            selected = enumValue == scrollbarsSampleExampleType,
+                            selected = enumEntry == scrollbarsSampleExampleType,
                             text = {
                                 Text(
                                     modifier = Modifier.basicMarquee(),
-                                    text = enumValue.name.uppercase(),
+                                    text = enumEntry.name.uppercase(),
                                     maxLines = 1
                                 )
                             },
                             onClick = {
-                                scrollbarsSampleExampleType = enumValue
+                                scrollbarsSampleExampleType = enumEntry
                             },
                         )
                     }
@@ -1444,18 +1487,18 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsOrientation.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        ScrollbarsOrientation.values().forEach { enumValue ->
+                        ScrollbarsOrientation.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsOrientation,
+                                selected = enumEntry == scrollbarsOrientation,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsOrientation = enumValue
+                                    scrollbarsOrientation = enumEntry
                                 },
                             )
                         }
@@ -1471,26 +1514,47 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsGravity.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        ScrollbarsGravity.values().forEach { enumValue ->
+                        ScrollbarsGravity.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsGravity,
+                                selected = enumEntry == scrollbarsGravity,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsGravity = enumValue
+                                    scrollbarsGravity = enumEntry
                                 },
                             )
                         }
                     }
                 )
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(space = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier.weight(weight = 1.0F),
+                        text = "IS REVERSE LAYOUT:",
+                        style = MaterialTheme.typography.labelLarge,
+                        maxLines = 1
+                    )
+                    Switch(
+                        checked = scrollbarsIsReverseLayout,
+                        onCheckedChange = {
+                            scrollbarsIsReverseLayout = it
+                        }
+                    )
+                }
+
                 Text(
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     text = "HORIZONTAL PADDING VALUE:",
                     style = MaterialTheme.typography.labelLarge
                 )
@@ -1526,18 +1590,18 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsSampleSizeType.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        SampleSizeType.values().forEach { enumValue ->
+                        SampleSizeType.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsSampleSizeType,
+                                selected = enumEntry == scrollbarsSampleSizeType,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsSampleSizeType = enumValue
+                                    scrollbarsSampleSizeType = enumEntry
                                 },
                             )
                         }
@@ -1590,18 +1654,18 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsSampleLayersType.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        SampleLayersType.values().forEach { enumValue ->
+                        SampleLayersType.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsSampleLayersType,
+                                selected = enumEntry == scrollbarsSampleLayersType,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsSampleLayersType = enumValue
+                                    scrollbarsSampleLayersType = enumEntry
                                 },
                             )
                         }
@@ -1663,18 +1727,18 @@ fun MainScreenContent() {
                             selectedTabIndex = scrollbarsSplitConfigureLayerType.ordinal,
                             modifier = Modifier.fillMaxWidth(),
                             tabs = {
-                                SampleConfigureLayerType.values().forEach { enumValue ->
+                                SampleConfigureLayerType.entries.forEach { enumEntry ->
                                     Tab(
-                                        selected = enumValue == scrollbarsSplitConfigureLayerType,
+                                        selected = enumEntry == scrollbarsSplitConfigureLayerType,
                                         text = {
                                             Text(
                                                 modifier = Modifier.basicMarquee(),
-                                                text = enumValue.name.uppercase(),
+                                                text = enumEntry.name.uppercase(),
                                                 maxLines = 1
                                             )
                                         },
                                         onClick = {
-                                            scrollbarsSplitConfigureLayerType = enumValue
+                                            scrollbarsSplitConfigureLayerType = enumEntry
                                         },
                                     )
                                 }
@@ -1697,30 +1761,30 @@ fun MainScreenContent() {
                             },
                             modifier = Modifier.fillMaxWidth(),
                             tabs = {
-                                ScrollbarsLayerGravity.values().forEach { enumValue ->
+                                ScrollbarsLayerGravity.entries.forEach { enumEntry ->
                                     Tab(
                                         selected = when (scrollbarsSplitConfigureLayerType) {
                                             SampleConfigureLayerType.Background -> {
-                                                enumValue == scrollbarsBackgroundLayerGravity
+                                                enumEntry == scrollbarsBackgroundLayerGravity
                                             }
                                             SampleConfigureLayerType.Knob -> {
-                                                enumValue == scrollbarsKnobLayerGravity
+                                                enumEntry == scrollbarsKnobLayerGravity
                                             }
                                         },
                                         text = {
                                             Text(
                                                 modifier = Modifier.basicMarquee(),
-                                                text = enumValue.name.uppercase(),
+                                                text = enumEntry.name.uppercase(),
                                                 maxLines = 1
                                             )
                                         },
                                         onClick = {
                                             when (scrollbarsSplitConfigureLayerType) {
                                                 SampleConfigureLayerType.Background -> {
-                                                    scrollbarsBackgroundLayerGravity = enumValue
+                                                    scrollbarsBackgroundLayerGravity = enumEntry
                                                 }
                                                 SampleConfigureLayerType.Knob -> {
-                                                    scrollbarsKnobLayerGravity = enumValue
+                                                    scrollbarsKnobLayerGravity = enumEntry
                                                 }
                                             }
                                         },
@@ -1824,18 +1888,18 @@ fun MainScreenContent() {
                     selectedTabIndex = scrollbarsContentConfigureLayerType.ordinal,
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        SampleConfigureLayerType.values().forEach { enumValue ->
+                        SampleConfigureLayerType.entries.forEach { enumEntry ->
                             Tab(
-                                selected = enumValue == scrollbarsContentConfigureLayerType,
+                                selected = enumEntry == scrollbarsContentConfigureLayerType,
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
-                                    scrollbarsContentConfigureLayerType = enumValue
+                                    scrollbarsContentConfigureLayerType = enumEntry
                                 },
                             )
                         }
@@ -1858,30 +1922,30 @@ fun MainScreenContent() {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     tabs = {
-                        SampleLayerContentType.values().forEach { enumValue ->
+                        SampleLayerContentType.entries.forEach { enumEntry ->
                             Tab(
                                 selected = when (scrollbarsContentConfigureLayerType) {
                                     SampleConfigureLayerType.Background -> {
-                                        scrollbarsSampleBackgroundLayerContentType == enumValue
+                                        scrollbarsSampleBackgroundLayerContentType == enumEntry
                                     }
                                     SampleConfigureLayerType.Knob -> {
-                                        scrollbarsSampleKnobLayerContentType == enumValue
+                                        scrollbarsSampleKnobLayerContentType == enumEntry
                                     }
                                 },
                                 text = {
                                     Text(
                                         modifier = Modifier.basicMarquee(),
-                                        text = enumValue.name.uppercase(),
+                                        text = enumEntry.name.uppercase(),
                                         maxLines = 1
                                     )
                                 },
                                 onClick = {
                                     when (scrollbarsContentConfigureLayerType) {
                                         SampleConfigureLayerType.Background -> {
-                                            scrollbarsSampleBackgroundLayerContentType = enumValue
+                                            scrollbarsSampleBackgroundLayerContentType = enumEntry
                                         }
                                         SampleConfigureLayerType.Knob -> {
-                                            scrollbarsSampleKnobLayerContentType = enumValue
+                                            scrollbarsSampleKnobLayerContentType = enumEntry
                                         }
                                     }
                                 },
@@ -1957,30 +2021,30 @@ fun MainScreenContent() {
                         },
                         modifier = Modifier.fillMaxWidth(),
                         tabs = {
-                            SampleDefaultLayerContentShape.values().forEach { enumValue ->
+                            SampleDefaultLayerContentShape.entries.forEach { enumEntry ->
                                 Tab(
                                     selected = when (scrollbarsContentConfigureLayerType) {
                                         SampleConfigureLayerType.Background -> {
-                                            scrollbarsSampleBackgroundLayerContentShape == enumValue
+                                            scrollbarsSampleBackgroundLayerContentShape == enumEntry
                                         }
                                         SampleConfigureLayerType.Knob -> {
-                                            scrollbarsSampleKnobLayerContentShape == enumValue
+                                            scrollbarsSampleKnobLayerContentShape == enumEntry
                                         }
                                     },
                                     text = {
                                         Text(
                                             modifier = Modifier.basicMarquee(),
-                                            text = enumValue.name.uppercase(),
+                                            text = enumEntry.name.uppercase(),
                                             maxLines = 1
                                         )
                                     },
                                     onClick = {
                                         when (scrollbarsContentConfigureLayerType) {
                                             SampleConfigureLayerType.Background -> {
-                                                scrollbarsSampleBackgroundLayerContentShape = enumValue
+                                                scrollbarsSampleBackgroundLayerContentShape = enumEntry
                                             }
                                             SampleConfigureLayerType.Knob -> {
-                                                scrollbarsSampleKnobLayerContentShape = enumValue
+                                                scrollbarsSampleKnobLayerContentShape = enumEntry
                                             }
                                         }
                                     },
@@ -2004,30 +2068,30 @@ fun MainScreenContent() {
                         },
                         modifier = Modifier.fillMaxWidth(),
                         tabs = {
-                            SampleDefaultLayerContentStyle.values().forEach { enumValue ->
+                            SampleDefaultLayerContentStyle.entries.forEach { enumEntry ->
                                 Tab(
                                     selected = when (scrollbarsContentConfigureLayerType) {
                                         SampleConfigureLayerType.Background -> {
-                                            scrollbarsSampleBackgroundLayerContentStyle == enumValue
+                                            scrollbarsSampleBackgroundLayerContentStyle == enumEntry
                                         }
                                         SampleConfigureLayerType.Knob -> {
-                                            scrollbarsSampleKnobLayerContentStyle == enumValue
+                                            scrollbarsSampleKnobLayerContentStyle == enumEntry
                                         }
                                     },
                                     text = {
                                         Text(
                                             modifier = Modifier.basicMarquee(),
-                                            text = enumValue.name.uppercase(),
+                                            text = enumEntry.name.uppercase(),
                                             maxLines = 1
                                         )
                                     },
                                     onClick = {
                                         when (scrollbarsContentConfigureLayerType) {
                                             SampleConfigureLayerType.Background -> {
-                                                scrollbarsSampleBackgroundLayerContentStyle = enumValue
+                                                scrollbarsSampleBackgroundLayerContentStyle = enumEntry
                                             }
                                             SampleConfigureLayerType.Knob -> {
-                                                scrollbarsSampleKnobLayerContentStyle = enumValue
+                                                scrollbarsSampleKnobLayerContentStyle = enumEntry
                                             }
                                         }
                                     },
@@ -2147,30 +2211,30 @@ fun MainScreenContent() {
                             },
                             modifier = Modifier.fillMaxWidth(),
                             tabs = {
-                                SampleIdleActiveAnimationSpec.values().forEach { enumValue ->
+                                SampleIdleActiveAnimationSpec.entries.forEach { enumEntry ->
                                     Tab(
                                         selected = when (scrollbarsContentConfigureLayerType) {
                                             SampleConfigureLayerType.Background -> {
-                                                scrollbarsSampleBackgroundIdleActiveAnimationSpec == enumValue
+                                                scrollbarsSampleBackgroundIdleActiveAnimationSpec == enumEntry
                                             }
                                             SampleConfigureLayerType.Knob -> {
-                                                scrollbarsSampleKnobIdleActiveAnimationSpec == enumValue
+                                                scrollbarsSampleKnobIdleActiveAnimationSpec == enumEntry
                                             }
                                         },
                                         text = {
                                             Text(
                                                 modifier = Modifier.basicMarquee(),
-                                                text = enumValue.name.uppercase(),
+                                                text = enumEntry.name.uppercase(),
                                                 maxLines = 1
                                             )
                                         },
                                         onClick = {
                                             when (scrollbarsContentConfigureLayerType) {
                                                 SampleConfigureLayerType.Background -> {
-                                                    scrollbarsSampleBackgroundIdleActiveAnimationSpec = enumValue
+                                                    scrollbarsSampleBackgroundIdleActiveAnimationSpec = enumEntry
                                                 }
                                                 SampleConfigureLayerType.Knob -> {
-                                                    scrollbarsSampleKnobIdleActiveAnimationSpec = enumValue
+                                                    scrollbarsSampleKnobIdleActiveAnimationSpec = enumEntry
                                                 }
                                             }
                                         },
@@ -2199,18 +2263,18 @@ fun MainScreenContent() {
                 selectedTabIndex = scrollbarsSampleVisibilityType.ordinal,
                 modifier = Modifier.fillMaxWidth(),
                 tabs = {
-                    SampleVisibilityType.values().forEach { enumValue ->
+                    SampleVisibilityType.entries.forEach { enumEntry ->
                         Tab(
-                            selected = enumValue == scrollbarsSampleVisibilityType,
+                            selected = enumEntry == scrollbarsSampleVisibilityType,
                             text = {
                                 Text(
                                     modifier = Modifier.basicMarquee(),
-                                    text = enumValue.name.uppercase(),
+                                    text = enumEntry.name.uppercase(),
                                     maxLines = 1
                                 )
                             },
                             onClick = {
-                                scrollbarsSampleVisibilityType = enumValue
+                                scrollbarsSampleVisibilityType = enumEntry
                             },
                         )
                     }
@@ -2233,18 +2297,18 @@ fun MainScreenContent() {
                         selectedTabIndex = scrollbarsDynamicVisibilityAnimationSpec.ordinal,
                         modifier = Modifier.fillMaxWidth(),
                         tabs = {
-                            SampleDynamicVisibilityAnimationSpec.values().forEach { enumValue ->
+                            SampleDynamicVisibilityAnimationSpec.entries.forEach { enumEntry ->
                                 Tab(
-                                    selected = enumValue == scrollbarsDynamicVisibilityAnimationSpec,
+                                    selected = enumEntry == scrollbarsDynamicVisibilityAnimationSpec,
                                     text = {
                                         Text(
                                             modifier = Modifier.basicMarquee(),
-                                            text = enumValue.name.uppercase(),
+                                            text = enumEntry.name.uppercase(),
                                             maxLines = 1
                                         )
                                     },
                                     onClick = {
-                                        scrollbarsDynamicVisibilityAnimationSpec = enumValue
+                                        scrollbarsDynamicVisibilityAnimationSpec = enumEntry
                                     },
                                 )
                             }
@@ -2405,18 +2469,18 @@ fun MainScreenContent() {
                         selectedTabIndex = scrollbarsSampleStaticKnobType.ordinal,
                         modifier = Modifier.fillMaxWidth(),
                         tabs = {
-                            SampleStaticKnobType.values().forEach { enumValue ->
+                            SampleStaticKnobType.entries.forEach { enumEntry ->
                                 Tab(
-                                    selected = enumValue == scrollbarsSampleStaticKnobType,
+                                    selected = enumEntry == scrollbarsSampleStaticKnobType,
                                     text = {
                                         Text(
                                             modifier = Modifier.basicMarquee(),
-                                            text = enumValue.name.uppercase(),
+                                            text = enumEntry.name.uppercase(),
                                             maxLines = 1
                                         )
                                     },
                                     onClick = {
-                                        scrollbarsSampleStaticKnobType = enumValue
+                                        scrollbarsSampleStaticKnobType = enumEntry
                                     },
                                 )
                             }
@@ -2427,18 +2491,18 @@ fun MainScreenContent() {
                         selectedTabIndex = scrollbarsSampleDynamicKnobType.ordinal,
                         modifier = Modifier.fillMaxWidth(),
                         tabs = {
-                            SampleDynamicKnobType.values().forEach { enumValue ->
+                            SampleDynamicKnobType.entries.forEach { enumEntry ->
                                 Tab(
-                                    selected = enumValue == scrollbarsSampleDynamicKnobType,
+                                    selected = enumEntry == scrollbarsSampleDynamicKnobType,
                                     text = {
                                         Text(
                                             modifier = Modifier.basicMarquee(),
-                                            text = enumValue.name.uppercase(),
+                                            text = enumEntry.name.uppercase(),
                                             maxLines = 1
                                         )
                                     },
                                     onClick = {
-                                        scrollbarsSampleDynamicKnobType = enumValue
+                                        scrollbarsSampleDynamicKnobType = enumEntry
                                     },
                                 )
                             }
@@ -2540,18 +2604,18 @@ fun MainScreenContent() {
                 selectedTabIndex = scrollbarsSampleKnobTypeAnimationSpec.ordinal,
                 modifier = Modifier.fillMaxWidth(),
                 tabs = {
-                    SampleKnobTypeAnimationSpec.values().forEach { enumValue ->
+                    SampleKnobTypeAnimationSpec.entries.forEach { enumEntry ->
                         Tab(
-                            selected = enumValue == scrollbarsSampleKnobTypeAnimationSpec,
+                            selected = enumEntry == scrollbarsSampleKnobTypeAnimationSpec,
                             text = {
                                 Text(
                                     modifier = Modifier.basicMarquee(),
-                                    text = enumValue.name.uppercase(),
+                                    text = enumEntry.name.uppercase(),
                                     maxLines = 1
                                 )
                             },
                             onClick = {
-                                scrollbarsSampleKnobTypeAnimationSpec = enumValue
+                                scrollbarsSampleKnobTypeAnimationSpec = enumEntry
                             },
                         )
                     }
@@ -2695,7 +2759,7 @@ enum class SampleScrollbarsExampleType {
     Custom
 }
 
-@Suppress("EnumEntryName")
+@Suppress("EnumEntryName", "unused")
 enum class SampleGridSpanCount(val spanCount: Int) {
     Span_1(1),
     Span_2(2),

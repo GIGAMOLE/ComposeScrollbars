@@ -1048,9 +1048,19 @@ class ScrollbarsState(
                 }
             }
 
-            targetStartKnobFractionState = targetStartKnobFraction.coerceIn(0.0F, 1.0F)
-            targetEndKnobFractionState = targetEndKnobFraction.coerceIn(0.0F, 1.0F)
-            targetScrollFractionState = targetScrollFraction.coerceIn(0.0F, 1.0F)
+            val layoutTargetStartKnobFraction = targetStartKnobFraction.coerceIn(0.0F, 1.0F)
+            val layoutTargetEndKnobFraction = targetEndKnobFraction.coerceIn(0.0F, 1.0F)
+            val layoutTargetScrollFraction = targetScrollFraction.coerceIn(0.0F, 1.0F)
+
+            if (config.isReverseLayout) {
+                targetStartKnobFractionState = 1.0F - layoutTargetEndKnobFraction
+                targetEndKnobFractionState = 1.0F - layoutTargetStartKnobFraction
+                targetScrollFractionState = 1.0F - layoutTargetScrollFraction
+            } else {
+                targetStartKnobFractionState = layoutTargetStartKnobFraction
+                targetEndKnobFractionState = layoutTargetEndKnobFraction
+                targetScrollFractionState = layoutTargetScrollFraction
+            }
         }
     }
 }

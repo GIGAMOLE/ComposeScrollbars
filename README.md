@@ -20,12 +20,12 @@ Features:
 
 ## Sample App
 
-| Sample 1 | Sample 2 | Sample 3 |
-|-|-|-|
+| Sample 1                                     | Sample 2                                     | Sample 3                                     |
+|----------------------------------------------|----------------------------------------------|----------------------------------------------|
 | <img src="/media/sample-1.gif" width="248"/> | <img src="/media/sample-2.gif" width="248"/> | <img src="/media/sample-3.gif" width="248"/> |
 
-| Sample 4 | Sample 5 | Sample 6 |
-|-|-|-|
+| Sample 4                                     | Sample 5                                     | Sample 6                                     |
+|----------------------------------------------|----------------------------------------------|----------------------------------------------|
 | <img src="/media/sample-4.gif" width="248"/> | <img src="/media/sample-5.gif" width="248"/> | <img src="/media/sample-6.gif" width="248"/> |
 
 Download or clone this repository to discover the sample app.
@@ -77,16 +77,17 @@ To create a `ScrollbarsState`, use one of the utility functions: `rememberScroll
 
 The `ScrollbarsConfig` setups the scrollbars layouts, styles and appearances:
 
-|Param|Description|
-|-|-|
-|`orientation`|The scrollbars orientation: `Horizontal` or `Vertical`.|
-|`gravity`|The scrollbars gravity: `Start` or `End`.|
-|`paddingValues`|The scrollbars layers container padding values.|
-|`sizeType`|The scrollbars layers container size: `Full`, `Fraction` or `Exact`.|
-|`layersType`|The [`ScrollbarsLayersType`](#scrollbarslayerstype).|
-|`backgroundLayerContentType`|The background [`ScrollbarsLayerContentType`](#scrollbarslayercontenttype).|
-|`knobLayerContentType`|The knob [`ScrollbarsLayerContentType`](#scrollbarslayercontenttype).|
-|`visibilityType`|The [`ScrollbarsVisibilityType`](#scrollbarsvisibilitytype).|
+| Param                        | Description                                                                 |
+|------------------------------|-----------------------------------------------------------------------------|
+| `orientation`                | The scrollbars orientation: `Horizontal` or `Vertical`.                     |
+| `gravity`                    | The scrollbars gravity: `Start` or `End`.                                   |
+| `isReverseLayout`            | The scrollbars reverse layout indicator.                                    |
+| `paddingValues`              | The scrollbars layers container padding values.                             |
+| `sizeType`                   | The scrollbars layers container size: `Full`, `Fraction` or `Exact`.        |
+| `layersType`                 | The [`ScrollbarsLayersType`](#scrollbarslayerstype).                        |
+| `backgroundLayerContentType` | The background [`ScrollbarsLayerContentType`](#scrollbarslayercontenttype). |
+| `knobLayerContentType`       | The knob [`ScrollbarsLayerContentType`](#scrollbarslayercontenttype).       |
+| `visibilityType`             | The [`ScrollbarsVisibilityType`](#scrollbarsvisibilitytype).                |
 
 ##### ScrollbarsLayersType
 

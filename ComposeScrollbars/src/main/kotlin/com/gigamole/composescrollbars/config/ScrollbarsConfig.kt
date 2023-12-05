@@ -15,6 +15,7 @@ import com.gigamole.composescrollbars.scrolltype.ScrollbarsScrollType
  *
  * @property orientation The [ScrollbarsOrientation].
  * @property gravity The [ScrollbarsGravity].
+ * @property isReverseLayout The reverse layout indicator.
  * @property paddingValues The scrollbars layers container [PaddingValues].
  * @property sizeType The [ScrollbarsSizeType].
  * @property layersType The [ScrollbarsLayersType].
@@ -27,6 +28,7 @@ import com.gigamole.composescrollbars.scrolltype.ScrollbarsScrollType
 data class ScrollbarsConfig(
     val orientation: ScrollbarsOrientation,
     val gravity: ScrollbarsGravity = ScrollbarsConfigDefaults.Gravity,
+    val isReverseLayout: Boolean = ScrollbarsConfigDefaults.IsReverseLayout,
     val paddingValues: PaddingValues = ScrollbarsConfigDefaults.PaddingValues,
     val sizeType: ScrollbarsSizeType = ScrollbarsConfigDefaults.SizeType,
     val layersType: ScrollbarsLayersType = ScrollbarsConfigDefaults.LayersType,
