@@ -65,7 +65,7 @@ For more technical and detailed documentation, read the library `KDoc`.
 
 The `Scrollbars` presents scrollbars based on the provided [`ScrollbarsState`](#scrollbarsstate).
 
-Just place it on top of your scrollable content.
+Just place it above (Z-order) of your scrollable content so its visible.
 
 ### ScrollbarsState
 
